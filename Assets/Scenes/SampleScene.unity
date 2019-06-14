@@ -1583,7 +1583,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 775497774}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.519, y: 0.117, z: 0}
+  m_LocalPosition: {x: -4.14, y: 0.117, z: 0}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_Children:
   - {fileID: 1635560463}
@@ -1652,7 +1652,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 779933899}
-  - component: {fileID: 779933901}
   - component: {fileID: 779933900}
   - component: {fileID: 779933902}
   m_Layer: 0
@@ -1689,19 +1688,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyTag: Player
---- !u!135 &779933901
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 779933898}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Radius: 0.18
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &779933902
 BoxCollider:
   m_ObjectHideFlags: 0

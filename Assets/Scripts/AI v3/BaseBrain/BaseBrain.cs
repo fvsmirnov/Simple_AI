@@ -70,8 +70,9 @@ public class BaseBrain : MonoBehaviour, IBrain
             if (CurrentState.GetType().BaseType != stateType)
             {
 
-                if (_states[stateType] != null)                Debug.Log(CurrentState.GetType().BaseType + " : " + stateType);
+                if (_states[stateType] != null)                
                 {
+                    Debug.Log(CurrentState.GetType().BaseType + " : " + stateType);
                     CurrentState.Exit(this);    //Call current state exit
                     CurrentState = _states[stateType];
                     CurrentState.Init(this);    //Call new state start 
@@ -85,9 +86,11 @@ public class BaseBrain : MonoBehaviour, IBrain
         navMeshAgent.speed = value;
     }
 
+    //Protected methods
     protected virtual void Start()
     {
         InitStates();
+        InitStartPoint();
         animator.speed = navMeshAgent.speed;
         ChangeState(typeof(BaseWanderState));   //Init start state
     }
@@ -99,6 +102,23 @@ public class BaseBrain : MonoBehaviour, IBrain
             _states.Add(states[i].GetType().BaseType, states[i]);
         }
         states = null; //Prepare to destroy unused array
+    }
+
+    //Set start patrol point next after nearest.
+    void InitStartPoint()
+    {
+        float nearestDist = int.MaxValue;
+        for (int i = 0; i < patrolPoints.Length; i++)
+        {
+            float nextDist = Vector3.Distance(transform.position, patrolPoints[i].position);
+            if (nextDist < nearestDist)
+            {
+                nextPatrolPoint = i + 1;
+                nearestDist = nextDist;
+            }
+        }
+
+        nextPatrolPoint = nextPatrolPoint % patrolPoints.Length;
     }
 
     private float lookWeight = 0;
@@ -124,6 +144,7 @@ public class BaseBrain : MonoBehaviour, IBrain
         CurrentState.Execute(this);
     }
 
+    //Private methods
     private void OnAnimatorIK(int layerIndex)
     {
         if (target != null)

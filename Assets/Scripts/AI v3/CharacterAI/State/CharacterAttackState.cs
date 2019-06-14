@@ -60,11 +60,6 @@ public class CharacterAttackState : BaseAttackState
         brain.ChangeState(typeof(BaseTargetLostState));
     }
 
-    void StopAction(IEnumerator action, BaseBrain brain)
-    {
-
-    }
-
     /// <summary>
     /// Execute action with delay (before / after)
     /// </summary>
