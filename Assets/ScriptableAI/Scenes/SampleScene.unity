@@ -235,12 +235,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 42109408}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &42109410 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -5420008163957686366, guid: cecfadb4828814f4382c7f3d0323e146,
-    type: 3}
-  m_PrefabInstance: {fileID: 42109408}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &42109411 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: cecfadb4828814f4382c7f3d0323e146,
@@ -277,6 +271,39 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!95 &42109414 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: -6057140222963153312, guid: cecfadb4828814f4382c7f3d0323e146,
+    type: 3}
+  m_PrefabInstance: {fileID: 42109408}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &42109415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 42109411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98f5ed0cbd704fe419fc125637c39b2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  navMeshAgent: {fileID: 0}
+  animator: {fileID: 42109414}
+  vision: {fileID: 1635560464}
+  states:
+  - {fileID: 11400000, guid: beda130ba57528344859b4d6d05ecfae, type: 2}
+  - {fileID: 11400000, guid: 49b18916dbbf42c428e42181aa20376b, type: 2}
+  - {fileID: 11400000, guid: 5781ed058bbd8b84a850c051685ee205, type: 2}
+  - {fileID: 11400000, guid: 8437ad2dfd1a84a40a46f470536a4898, type: 2}
+  changeStatePossible: 1
+  patrolPoints: []
+  nextPatrolPoint: 0
+  normalSpeed: 1
+  chaseSpeed: 1.5
+  useAI: 0
+  currentState: {fileID: 0}
 --- !u!1 &307957862
 GameObject:
   m_ObjectHideFlags: 0
@@ -615,64 +642,6 @@ Transform:
   m_Father: {fileID: 811898707}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &520142978
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 520142979}
-  - component: {fileID: 520142981}
-  - component: {fileID: 520142980}
-  m_Layer: 0
-  m_Name: DamageCollider
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &520142979
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 520142978}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.175, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 42109410}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &520142980
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 520142978}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.25149986, y: 0.09318751, z: 0.122166544}
-  m_Center: {x: 0.057443008, y: -0.004305855, z: -0.008336697}
---- !u!114 &520142981
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 520142978}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08cfb45b859295a44a12274f18ce61e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyTag: Player
 --- !u!4 &642850942 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -5420008163957686366, guid: cecfadb4828814f4382c7f3d0323e146,
@@ -823,7 +792,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: beda130ba57528344859b4d6d05ecfae, type: 2}
   - {fileID: 11400000, guid: 49b18916dbbf42c428e42181aa20376b, type: 2}
   - {fileID: 11400000, guid: 5781ed058bbd8b84a850c051685ee205, type: 2}
-  - {fileID: 11400000, guid: 8437ad2dfd1a84a40a46f470536a4898, type: 2}
+  - {fileID: 11400000, guid: 330df41c3aa78d8418f05582ba2090fa, type: 2}
   changeStatePossible: 1
   patrolPoints:
   - {fileID: 389884638}
@@ -833,6 +802,7 @@ MonoBehaviour:
   nextPatrolPoint: 0
   normalSpeed: 1
   chaseSpeed: 1.5
+  useAI: 1
   currentState: {fileID: 0}
 --- !u!195 &775497777
 NavMeshAgent:

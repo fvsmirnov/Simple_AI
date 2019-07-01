@@ -21,6 +21,7 @@ public class BaseBrain : MonoBehaviour
     [Header("Other pref")]
     public float normalSpeed = 1.5f;
     public float chaseSpeed = 2f;
+    public bool useAI = true;
 
     [SerializeField] private BaseState currentState;
     private GameObject target;
@@ -40,12 +41,14 @@ public class BaseBrain : MonoBehaviour
         {
             if (target == null && value != null)
             {
+                //navMeshAgent.isStopped = false;
                 lastTargetPosition = value.transform.position;
                 ChangeState(typeof(BaseChaseState));
             }
             else if (target != null && value == null)
             {
-                animator.StopPlayback();
+                //navMeshAgent.isStopped = true;
+                navMeshAgent.SetDestination(lastTargetPosition); // go to last known pos
                 ChangeState(typeof(BaseTargetLostState));
             }
             target = value;
@@ -96,10 +99,13 @@ public class BaseBrain : MonoBehaviour
     //Protected methods
     protected virtual void Start()
     {
-        InitStates();
-        InitStartPoint();
-        animator.speed = navMeshAgent.speed;
-        ChangeState(typeof(BaseWanderState));   //Init start state
+        if(useAI)
+        {
+            InitStates();
+            InitStartPoint();
+            animator.speed = navMeshAgent.speed;
+            ChangeState(typeof(BaseWanderState));   //Init start state
+        }
     }
 
     protected virtual void InitStates()
@@ -132,23 +138,30 @@ public class BaseBrain : MonoBehaviour
     private float lookSmoother = 3;
     protected virtual void Update()
     {
-        //Check target
-        Target = vision.Detect();
-        if (target != null)
+        if (useAI)
         {
-            //IK
-            lookWeight = Mathf.Lerp(lookWeight, 1f, Time.deltaTime * lookSmoother);
-            SetSpeed(Mathf.Lerp(navMeshAgent.speed, chaseSpeed, Time.deltaTime * lookSmoother));
+            //Check target
+            Target = vision.Detect();
+            if (target != null)
+            {
+                //IK
+                lookWeight = Mathf.Lerp(lookWeight, 1f, Time.deltaTime * lookSmoother);
+                SetSpeed(Mathf.Lerp(navMeshAgent.speed, chaseSpeed, Time.deltaTime * lookSmoother));
+            }
+            else
+            {
+                //IK
+                lookWeight = Mathf.Lerp(lookWeight, 0f, Time.deltaTime * lookSmoother);
+                SetSpeed(Mathf.Lerp(navMeshAgent.speed, normalSpeed, Time.deltaTime * lookSmoother));
+            }
+
+            animator.SetFloat("MoveSpeed", navMeshAgent.speed); //Change animation speed
+            CurrentState.Execute(this);
         }
         else
         {
-            //IK
-            lookWeight = Mathf.Lerp(lookWeight, 0f, Time.deltaTime * lookSmoother);
-            SetSpeed(Mathf.Lerp(navMeshAgent.speed, normalSpeed, Time.deltaTime * lookSmoother));
+            PlayerController();
         }
-
-        animator.SetFloat("MoveSpeed", navMeshAgent.speed); //Change animation speed
-        CurrentState.Execute(this);
     }
 
     //Private methods
@@ -159,5 +172,16 @@ public class BaseBrain : MonoBehaviour
             animator.SetLookAtWeight(lookWeight);
             animator.SetLookAtPosition(target.transform.position);
         }
+    }
+
+    private void PlayerController()
+    {
+        float move = Input.GetAxis("Vertical") * 1f * Time.deltaTime;
+        float rotate = Input.GetAxis("Horizontal") * 55f * Time.deltaTime;
+        transform.Translate(Vector3.forward * move);
+        transform.Rotate(Vector3.up * rotate);
+
+        int moveAnim = move * 35f >= 0.5f ? 1 : 0; // 35f - value amplifier
+        animator.SetFloat("MoveSpeed", moveAnim);
     }
 }

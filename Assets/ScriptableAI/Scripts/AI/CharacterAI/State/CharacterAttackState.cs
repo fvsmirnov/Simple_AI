@@ -48,7 +48,6 @@ public class CharacterAttackState : BaseAttackState
                                                    0,                                  //time delay before
                                                    attackInterval[actionId]);          //time delay after
 
-                brain.StopCoroutine(action);
                 brain.StartCoroutine(action);
                 actionId = (actionId + 1) % actions.Length;
                 executeNextAction = false;

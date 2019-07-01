@@ -5,20 +5,20 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "AI/Character/States/TargetLost", fileName = "CharacterTargetLostState")]
 public class CharacterTargetLostState : BaseTargetLostState
 {
-    IEnumerator enumerator;
+    IEnumerator searchTarget;
+    IEnumerator targetLost;
 
     public override void Init(BaseBrain brain)
     {
-        brain.SetSpeed(0);
-        TargetLostAnimation(brain);
-
-        enumerator = enumerator.DoWhile(5, null, () => brain.ChangeState(typeof(BaseWanderState)));
-        brain.StartCoroutine(enumerator);
+        searchTarget = searchTarget.DoWhile(1.5f, null, () => brain.StartCoroutine(targetLost));
+        targetLost = targetLost.DoWhile(3, () => TargetLostAnimation(brain), () => brain.ChangeState(typeof(BaseWanderState)));
+        brain.StartCoroutine(searchTarget);
     }
 
     public override void Exit(BaseBrain brain)
     {
-        brain.StopCoroutine(enumerator);
+        brain.StopCoroutine(searchTarget);
+        brain?.StopCoroutine(targetLost);
     }
 
     void TargetLostAnimation(BaseBrain brain)
