@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "AI/Character/States/Attack", fileName = "CharacterAttackState")]
-public class CharacterAttackState : BaseAttackState
+[CreateAssetMenu(menuName = "AI/Character/States/Battle", fileName = "CharacterBattleState")]
+public class CharacterBattleState : BaseAttackState
 {
     [Tooltip("Attack interval in seconds")]
     private float prepareAttackTime = 3f;

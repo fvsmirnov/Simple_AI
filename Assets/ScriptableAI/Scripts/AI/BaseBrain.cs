@@ -83,7 +83,7 @@ public class BaseBrain : MonoBehaviour
         }
     }
 
-    public void SetSpeed(float value)
+    public void SetNavMeshSpeed(float value)
     {
         navMeshAgent.speed = value;
     }
@@ -99,9 +99,10 @@ public class BaseBrain : MonoBehaviour
     //Protected methods
     protected virtual void Start()
     {
-        if(useAI)
+        InitStates();
+
+        if (useAI)
         {
-            InitStates();
             InitStartPoint();
             animator.speed = navMeshAgent.speed;
             ChangeState(typeof(BaseWanderState));   //Init start state
@@ -146,22 +147,19 @@ public class BaseBrain : MonoBehaviour
             {
                 //IK
                 lookWeight = Mathf.Lerp(lookWeight, 1f, Time.deltaTime * lookSmoother);
-                SetSpeed(Mathf.Lerp(navMeshAgent.speed, chaseSpeed, Time.deltaTime * lookSmoother));
+                SetNavMeshSpeed(Mathf.Lerp(navMeshAgent.speed, chaseSpeed, Time.deltaTime * lookSmoother));
             }
             else
             {
                 //IK
                 lookWeight = Mathf.Lerp(lookWeight, 0f, Time.deltaTime * lookSmoother);
-                SetSpeed(Mathf.Lerp(navMeshAgent.speed, normalSpeed, Time.deltaTime * lookSmoother));
+                SetNavMeshSpeed(Mathf.Lerp(navMeshAgent.speed, normalSpeed, Time.deltaTime * lookSmoother));
             }
 
             animator.SetFloat("MoveSpeed", navMeshAgent.speed); //Change animation speed
-            CurrentState.Execute(this);
         }
-        else
-        {
-            PlayerController();
-        }
+
+        CurrentState?.Execute(this);
     }
 
     //Private methods
@@ -172,16 +170,5 @@ public class BaseBrain : MonoBehaviour
             animator.SetLookAtWeight(lookWeight);
             animator.SetLookAtPosition(target.transform.position);
         }
-    }
-
-    private void PlayerController()
-    {
-        float move = Input.GetAxis("Vertical") * 1f * Time.deltaTime;
-        float rotate = Input.GetAxis("Horizontal") * 55f * Time.deltaTime;
-        transform.Translate(Vector3.forward * move);
-        transform.Rotate(Vector3.up * rotate);
-
-        int moveAnim = move * 35f >= 0.5f ? 1 : 0; // 35f - value amplifier
-        animator.SetFloat("MoveSpeed", moveAnim);
     }
 }
